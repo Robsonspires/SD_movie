@@ -1,6 +1,8 @@
-const API_URL = 'https://api.themoviedb.org/3/discover/movie?language=pt-BR&sort_by=popularity.desc&api_key=3fd2be6f0c70a2a598f084ddfb75487c&page=1';
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280';
-const SEARCH_API = 'https://api.themoviedb.org/3/search/movie?language=pt-BR&api_key=3fd2be6f0c70a2a598f084ddfb75487c&query=';
+const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=3fd2be6f0c70a2a598f084ddfb75487c&page=1';
+const SEARCH_API = 'https://api.themoviedb.org/3/search/movie?api_key=3fd2be6f0c70a2a598f084ddfb75487c&query=';
+const API_URL_BR = 'https://api.themoviedb.org/3/discover/movie?language=pt-BR&sort_by=popularity.desc&api_key=3fd2be6f0c70a2a598f084ddfb75487c&page=1';
+const SEARCH_API_BR = 'https://api.themoviedb.org/3/search/movie?language=pt-BR&api_key=3fd2be6f0c70a2a598f084ddfb75487c&query=';
 
 const main = document.getElementById('main');
 const form = document.getElementById('form');
@@ -66,14 +68,27 @@ function getClassByRate(vote) {
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const searchTerm = search.value;
+    var searchTerm = search.value;
+    var idioma = searchTerm.substring(0, 3).toLowerCase();
+    var tamanho = searchTerm.length;
 
-    if (searchTerm && searchTerm !== '') {
-        displayMovies(SEARCH_API + searchTerm);
-        search.value = '';
+    if (idioma == 'en ') {
+        searchTerm = searchTerm.substring(3, tamanho);
+        if (searchTerm && searchTerm !== '') {
+            displayMovies(SEARCH_API + searchTerm);
+            search.value = '';
+        } else {
+            displayMovies(API_URL);
+        }
     } else {
-        displayMovies(API_URL);
+
+        if (searchTerm && searchTerm !== '') {
+            displayMovies(SEARCH_API_BR + searchTerm);
+            search.value = '';
+        } else {
+            displayMovies(API_URL_BR);
+        }
     }
 });
 
-displayMovies(API_URL);
+displayMovies(API_URL_BR);
